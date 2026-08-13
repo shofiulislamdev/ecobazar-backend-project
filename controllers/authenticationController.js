@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 let registrationController = async (req, res) => {
-    const { email, password, confirmPassword, terms } = req.body
+    const { email, password, confirmPassword, fullName } = req.body
 
 
     let users = await existingData(res, { email: email })
@@ -19,12 +19,12 @@ let registrationController = async (req, res) => {
         })
     }
 
-    if (!terms) {
-        return res.send({
-            success: false,
-            message: "Please Accept Our Terms and Condition"
-        })
-    }
+    // if (!terms) {
+    //     return res.send({
+    //         success: false,
+    //         message: "Please Accept Our Terms and Condition"
+    //     })
+    // }
 
     emptyFieldValidation(res, email, password, confirmPassword)
 
@@ -40,7 +40,7 @@ let registrationController = async (req, res) => {
     let user = new User({
         email: email,
         password: hash,
-        terms: terms
+        fullName: fullName
     })
 
     await user.save()
