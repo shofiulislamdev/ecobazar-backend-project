@@ -2,11 +2,7 @@ const mongoose = require("mongoose")
 const { Schema } = mongoose
 
 const useSchema = new Schema({
-    firstName: {
-        type: String,
-    },
-
-    lastName: {
+    fullName: {
         type: String,
     },
 
@@ -22,13 +18,13 @@ const useSchema = new Schema({
         type: String,
     },
 
-    terms: {
-        type: Boolean,
-    },
+    // terms: {
+    //     type: Boolean,
+    // },
 
-    profile: {
-        type: String,
-    },
+    // profile: {
+    //     type: String,
+    // },
 
     isVerified: {
         type: Boolean,
@@ -47,21 +43,21 @@ const useSchema = new Schema({
     },
 
     billingAddress: {
-        firstName: {
+        fullName: {
             type: String,
         },
 
-        lastName: {
-            type: String,
-        },
+        // lastName: {
+        //     type: String,
+        // },
 
         email: {
             type: String,
         },
 
-        companyName: {
-            type: String,
-        },
+        // companyName: {
+        //     type: String,
+        // },
 
         street: {
             type: String,
@@ -79,9 +75,9 @@ const useSchema = new Schema({
             type: String,
         },
 
-        country: {
-            type: String,
-        }
+        // country: {
+        //     type: String,
+        // }
     }
 
 })
