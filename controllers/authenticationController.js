@@ -59,36 +59,7 @@ let registrationController = async (req, res) => {
     })
 }
 
-// let loginController = async (req, res) => {
-//     const { email, password } = req.body
 
-
-//     let users = await User.findOne({ email: email })
-
-//     if (!users) {
-//         return res.send({
-//             success: false, 
-//             message: "User not found" 
-//         })
-//     }
-
-//     emptyFieldValidation(res, email, password)
-
-//     let pass = bcrypt.compareSync(password, users.password);
-
-//     if (!pass) {
-//         return res.send({ 
-//             success: false,
-//             message: "Invalid Credential" 
-//         })
-//     }
-
-//     res.send({
-//         success: true,
-//         message: "Login Successfull"
-//     })
-
-// }
 
 let loginController = async (req, res) => {
     const { email, password } = req.body;
@@ -136,7 +107,9 @@ let loginController = async (req, res) => {
             id: users._id,
             fullName: users.fullName,
             email: users.email,
-            role: users.role
+            role: users.role,
+            isVerified: users.isVerified,
+            isHold: users.isHold
         }
     });
 };

@@ -14,7 +14,7 @@ const useSchema = new Schema({
         type: String,
     },
 
-    phoneNumber: {
+    phone: {
         type: String,
     },
 
@@ -40,6 +40,18 @@ const useSchema = new Schema({
     isHold: {
         type: Boolean,
         default: false
+    },
+
+    postalCode: {
+        type: String
+    },
+
+    address: {
+        type: String
+    },
+
+    city: {
+        type: String
     },
 
     billingAddress: {
@@ -71,7 +83,7 @@ const useSchema = new Schema({
             type: String,
         },
 
-        phoneNumber: {
+        phone: {
             type: String,
         },
 
