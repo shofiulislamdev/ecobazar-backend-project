@@ -54,41 +54,92 @@ let registrationController = async (req, res) => {
     mailVerification(token, email)
 
     res.send({
-        success: true, 
-        message: "Registration Successfull, Please check your email for verification" 
+        success: true,
+        message: "Registration Successfull, Please check your email for verification"
     })
 }
 
+// let loginController = async (req, res) => {
+//     const { email, password } = req.body
+
+
+//     let users = await User.findOne({ email: email })
+
+//     if (!users) {
+//         return res.send({
+//             success: false, 
+//             message: "User not found" 
+//         })
+//     }
+
+//     emptyFieldValidation(res, email, password)
+
+//     let pass = bcrypt.compareSync(password, users.password);
+
+//     if (!pass) {
+//         return res.send({ 
+//             success: false,
+//             message: "Invalid Credential" 
+//         })
+//     }
+
+//     res.send({
+//         success: true,
+//         message: "Login Successfull"
+//     })
+
+// }
+
 let loginController = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
+    // Check empty fields
+    emptyFieldValidation(res, email, password);
 
-    let users = await User.findOne({ email: email })
+    // Find user
+    let users = await User.findOne({ email: email });
 
     if (!users) {
         return res.send({
-            success: false, 
-            message: "User not found" 
-        })
+            success: false,
+            message: "User not found"
+        });
     }
 
-    emptyFieldValidation(res, email, password)
-
+    // Check password
     let pass = bcrypt.compareSync(password, users.password);
 
     if (!pass) {
-        return res.send({ 
+        return res.send({
             success: false,
-            message: "Invalid Credential" 
-        })
+            message: "Invalid Credential"
+        });
     }
 
+    // Generate JWT token
+    let token = tokenGenerator(
+        {
+            id: users._id,
+            email: users.email,
+            role: users.role
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        "1d"
+    );
+
+    // Send response
     res.send({
         success: true,
-        message: "Login Successfull"
-    })
-
-}
+        message: "Login Successfull",
+        token: token,
+        user: {
+            id: users._id,
+            fullName: users.fullName,
+            email: users.email,
+            role: users.role
+        }
+    });
+};
 
 let forgotPasswordController = async (req, res) => {
     let { email } = req.body
@@ -98,8 +149,8 @@ let forgotPasswordController = async (req, res) => {
     let users = await User.findOne({ email: email })
     if (!users) {
         return res.send({
-            success: false, 
-            message: "User not found" 
+            success: false,
+            message: "User not found"
         })
     }
 
@@ -111,8 +162,8 @@ let forgotPasswordController = async (req, res) => {
     resetPasswordMail(token, email)
 
     res.send({
-        success: true, 
-        message: "Please check your email" 
+        success: true,
+        message: "Please check your email"
     })
 }
 
@@ -122,8 +173,8 @@ let resetPasswordController = (req, res) => {
 
     if (newPassword !== confirmPassword) {
         return res.send({
-            success: false, 
-            message: "Confirm password not matched" 
+            success: false,
+            message: "Confirm password not matched"
         })
     }
 
@@ -136,8 +187,8 @@ let resetPasswordController = (req, res) => {
             const updateData = await User.findByIdAndUpdate({ _id: decoded.id }, { password: hash }, { new: true })
 
             res.send({
-                success: true, 
-                message: "Password Updated", updateData 
+                success: true,
+                message: "Password Updated", updateData
             })
         }
     });
@@ -157,8 +208,8 @@ let resendVerificationEmailController = async (req, res) => {
     mailVerification(token, email)
 
     res.send({
-        success: true, 
-        message: "Check your email for verification" 
+        success: true,
+        message: "Check your email for verification"
     })
 }
 
@@ -178,8 +229,8 @@ let verifyEmailController = async (req, res) => {
                 findUser.isVerified = true
                 findUser.save()
                 res.send({
-                    success: true, 
-                    message: "Email verified successfully" 
+                    success: true,
+                    message: "Email verified successfully"
                 })
             }
         }
