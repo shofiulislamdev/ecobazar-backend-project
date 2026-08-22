@@ -141,10 +141,10 @@ let forgotPasswordController = async (req, res) => {
 }
 
 let resetPasswordController = (req, res) => {
-    let { newPassword, confirmPassword } = req.body
+    let { password, confirmPassword } = req.body
     let { token } = req.params
 
-    if (newPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
         return res.send({
             success: false,
             message: "Confirm password not matched"
@@ -153,9 +153,12 @@ let resetPasswordController = (req, res) => {
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async function (err, decoded) {
         if (err) {
-            res.send({ message: "Unauthorized" })
+            return res.send({
+                success: false,
+                message: "Unauthorized"
+            })
         } else {
-            const hash = bcrypt.hashSync(newPassword, 10);
+            const hash = bcrypt.hashSync(password, 10);
             console.log(decoded)
             const updateData = await User.findByIdAndUpdate({ _id: decoded.id }, { password: hash }, { new: true })
 
