@@ -164,7 +164,7 @@ let resetPasswordController = (req, res) => {
 
             res.send({
                 success: true,
-                message: "Password Updated", updateData
+                message: "Password Updated",
             })
         }
     });
