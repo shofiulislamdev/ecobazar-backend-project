@@ -1,11 +1,21 @@
 const User = require('../models/userModel')
 
 let getAllUsersController = async (req, res) => {
-    let userData = await User.find({})
-    res.send({
-        message: "All user data",
-        userData
-    })
+    try {
+        let userData = await User.find({}).select('-password')
+
+        res.send({
+            success: true,
+            message: "All user data",
+            userData
+        })
+    } catch (error) {
+        res.send({
+            success: false,
+            message: "Failed to get all user data",
+            error: error.message
+        })
+    }
 }
 
 let singleUserDataController = async (req, res) => {
@@ -21,6 +31,7 @@ let deleteUserController = async (req, res) => {
     let { id } = req.params
     let userData = await User.findByIdAndDelete(id)
     res.send({
+        success: true,
         message: `User deleted`,
     })
 }
